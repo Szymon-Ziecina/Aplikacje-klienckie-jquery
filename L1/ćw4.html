@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #d1 {
+        height: 100px;
+        width: 100px;
+        background-color: green;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      #d2 {
+        height: 100vh;
+        width: 100vw;
+      }
+    </style>
+    <script src="jq/jq.js"></script>
+    <script>
+      $(document).ready(function () {
+        let number = 1;
+        $("#d1").on("mouseover", function () {
+          if (number < 5) {
+            $("#d1").text(number);
+            number++;
+          } else {
+            let height = $("#d1").height();
+            $("#d1")
+              .css("height", height * 2)
+              .css("width", height * 2);
+            $("#d1").text(0);
+            number = 1;
+          }
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div id="d2">
+      <div id="d1">0</div>
+    </div>
+  </body>
+</html>

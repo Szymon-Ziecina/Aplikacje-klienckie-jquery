@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #btn1 {
+        height: 50px;
+        width: 100px;
+      }
+      #d1 {
+        height: 100px;
+        width: 100px;
+        background-color: green;
+      }
+    </style>
+    <script src="jq/jq.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#btn1").on("click", function () {
+          console.log("ready");
+
+          let divHeight = $("#d1").height();
+          let result = confirm("Czy powiększyć diva?");
+          if (result) {
+            $("#d1")
+              .css("height", 2 * divHeight)
+              .css("width", 2 * divHeight);
+          } else {
+            $("#d1")
+              .css("height", divHeight / 3)
+              .css("width", divHeight / 3);
+          }
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <button id="btn1">Powiększ diva</button>
+    <div id="d1" />
+  </body>
+</html>
