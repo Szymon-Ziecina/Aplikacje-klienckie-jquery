@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      body {
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+      }
+      div {
+        height: 100%;
+      }
+      #d1 {
+        width: 30%;
+        background-color: gray;
+      }
+      #d2 {
+        width: 10px;
+        background-color: blue;
+      }
+      #d3 {
+        width: 70%;
+        background-color: yellow;
+      }
+    </style>
+    <script src="../jq/jq.js"></script>
+    <script>
+      $(document).ready(function () {
+        let windowWidth = $(window).width();
+        $("#d2").on("mousedown", function () {
+          $(window).on("mousemove", function (e) {
+            let percentage = (e.clientX / windowWidth) * 100;
+            $("#d1").css("width", `${percentage}%`);
+            $("#d3").css("width", `${100 - percentage}%`);
+          });
+        });
+        $("#d2").on("mouseup", function () {
+          $(window).off("mousemove");
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div id="d1">A</div>
+    <div id="d2"></div>
+    <div id="d3">B</div>
+  </body>
+</html>
