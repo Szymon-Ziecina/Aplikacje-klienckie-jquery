@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      h1 {
+        color: blue;
+      }
+      button {
+        width: 150px;
+        height: 25px;
+        border: none;
+        margin-bottom: 10px;
+      }
+      #board {
+        position: relative;
+      }
+      #p1 {
+        background-color: lightgreen;
+        top: 330px;
+      }
+      #p2 {
+        background-color: lightblue;
+        top: 330px;
+        left: 55px;
+      }
+      .player {
+        position: absolute;
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        z-index: 10;
+      }
+      .pole {
+        position: absolute;
+        height: 50px;
+        width: 50px;
+        border-radius: 10px;
+        background-color: lightgray;
+      }
+      .selected {
+        background-color: lightcoral;
+      }
+    </style>
+    <script src="../jq/jq.js"></script>
+    <script>
+      $(document).ready(function () {
+        let size = 5;
+        let p1Index = 0;
+        let p2Index = 0;
+        let gameStarted = false;
+        let p1Turn = true;
+
+        let positions = [];
+
+        for (let i = 0; i <= size; i++) {
+          for (let j = 0; j <= size; j++) {
+            const div = $("<div>");
+            div
+              .addClass("pole")
+              .css("left", j * 55)
+              .css("top", i * 55)
+              .on("click", function () {
+                if (!gameStarted) {
+                  const posX = $(this).css("left");
+                  const posY = $(this).css("top");
+                  if (!$(this).hasClass("selected")) {
+                    $(this).addClass("selected");
+                    positions.push({
+                      x: posX,
+                      y: posY,
+                    });
+                  } else {
+                    const findPositionIndex = positions.findIndex(
+                      (position) => position.x === posX && position.y === posY
+                    );
+                    console.log(findPositionIndex);
+                    positions.splice(findPositionIndex, 1);
+                    $(this).removeClass("selected");
+                  }
+                  console.log(positions);
+                }
+              });
+
+            $("#board").append(div);
+          }
+        }
+
+        $("#start").on("click", function () {
+          if (!gameStarted && positions.length > 1) {
+            $("h1").text("Gra zaczęta");
+            p2Index = positions.length - 1;
+            $("#p1").css("left", positions[0].x).css("top", positions[0].y);
+            $("#p2")
+              .css("left", positions[p2Index].x)
+              .css("top", positions[p2Index].y);
+            gameStarted = true;
+          }
+        });
+
+        $("#next").on("click", function () {
+          if (gameStarted) {
+            if (p1Turn) {
+              p1Index++;
+
+              if (p1Index === positions.length - 1) {
+                $("h1").text("Player 1 zakónczył gre");
+                console.log(p1Index);
+              }
+              if (p1Index === positions.length) {
+                $(".selected").removeClass("selected");
+                positions = [];
+                $("#p1").css("left", 0).css("top", 330);
+                $("#p2").css("left", 55).css("top", 330);
+                gameStarted = false;
+                p1Index = 0;
+                p2Index = 0;
+                p1Turn = true;
+                $("h1").text("Zadanie: Labirynt - tablice obiektów");
+              } else {
+                $("#p1")
+                  .css("left", positions[p1Index].x)
+                  .css("top", positions[p1Index].y);
+              }
+            } else {
+              p2Index--;
+              $("#p2")
+                .css("left", positions[p2Index].x)
+                .css("top", positions[p2Index].y);
+              if (p2Index === 0) {
+                $("h1").text("Player 2 zakónczył gre");
+              }
+            }
+            p1Turn = !p1Turn;
+          }
+        });
+
+        $("#reset").on("click", function () {
+          $(".selected").removeClass("selected");
+          positions = [];
+          $("#p1").css("left", 0).css("top", 330);
+          $("#p2").css("left", 55).css("top", 330);
+          gameStarted = false;
+          p1Index = 0;
+          p2Index = 0;
+          p1Turn = true;
+          $("h1").text("Zadanie: Labirynt - tablice obiektów");
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Zadanie: Labirynt - tablice obiektów</h1>
+    <div>
+      <button id="start">START GAME</button>
+      <button id="next">NEXT MOVE</button>
+      <button id="reset">RESET GAME</button>
+    </div>
+    <div id="board">
+      <div class="player" id="p1"></div>
+      <div class="player" id="p2"></div>
+    </div>
+  </body>
+</html>
